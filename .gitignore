@@ -4,3 +4,7 @@ node_modules/
 # production bundles
 dist/
 public/js/app.js
+
+.env
+
+theDataBase

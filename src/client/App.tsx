@@ -1,31 +1,32 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import PrivateRoute from './utils/privateRoute';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NavBar from './NavBar'
+import Login from './Login'
+import App2 from './App2'
+import ErrPage from './ErrPage'
+import AdminPage from './AdminPage'
+import EventPage from './EventPage'
 
-/* HOOK REACT EXAMPLE */
-const App = (props: AppProps) => {
-	const [greeting, setGreeting] = useState<string>('');
-
-	useEffect(() => {
-		async function getGreeting() {
-			try {
-				const res = await fetch('/api/hello');
-				const greeting = await res.json();
-				setGreeting(greeting);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		getGreeting();
-	}, []);
-
+const App = () => {
 	return (
-		<main className="container my-5">
-			<h1 className="text-primary text-center">Hello {greeting}!</h1>
-		</main>
+		<BrowserRouter>
+			<NavBar />
+			<Routes>
+				<Route path="/" element={<App2 />} />
+				<Route path="/FullEventPage/:id" element={<EventPage />} />
+
+
+				<Route path="/adminLogin" element={<Login />} />
+
+				<Route path="/adminPage" element={<PrivateRoute children={<AdminPage />} />} />
+
+				<Route path="*" element={<ErrPage />} />
+
+			</Routes>
+			{/* <Footer /> */}
+		</BrowserRouter>
 	);
 };
-
-interface AppProps { }
-
 
 export default App;

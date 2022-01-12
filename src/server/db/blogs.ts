@@ -1,23 +1,30 @@
 import { Query } from "./index";
 import { Users } from "./models";
 
-const selectAllFromThe_database_name = async () => Query("select * from the_database_name;");
+const selectAllFromEvents_table = () => Query("select * from events_table;");
+
+const selectEventFromEvents_table = async (id: number) => await Query("select * from events_table where id=?;", [id]);
 
 const find = (column: string, value: string | number) => {
-  return Query("SELECT * from the_database_name WHERE ?? = ?", [
+  return Query("SELECT * from users_table WHERE ?? = ?", [
     column,
     value,
   ]);
 };
 
-const insert = (newUser: { personsname: string, email: string, password: string }) => {
-  Query('Insert into suggestedeventsusers SET ?', [newUser]);
+const insertUser = (newUser: { email: string, password: string, role: string }) => {
+  Query('Insert into users_table SET ?', [newUser]);
 }
 
+const insertEvent = (newEvent: { name_of_event: string, date_of_event: Date, location_of_event: string, event_description: string, created_by: number }) => {
+  Query('Insert into events_table SET ?', [newEvent]);
+}
 export default {
-  selectAllFromThe_database_name,
+  selectAllFromEvents_table,
   find,
-  insert
+  insertUser,
+  insertEvent,
+  selectEventFromEvents_table
 };
 
 
