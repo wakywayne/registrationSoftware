@@ -12,5 +12,14 @@ rout.post("/", tokenCheck, async (req, res, next) => {
         console.log("code broke in makeAnEvent");
     }
 })
+rout.post("/divisions", tokenCheck, async (req, res, next) => {
+    try {
+        const division = req.body;
+
+        res.json(await blogs.insertDivision(division));
+    } catch {
+        console.log("code broke in makeAnEvent");
+    }
+})
 
 export default rout;

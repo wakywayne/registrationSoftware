@@ -7,6 +7,8 @@ import App2 from './App2'
 import ErrPage from './ErrPage'
 import AdminPage from './AdminPage'
 import EventPage from './EventPage'
+import Payment from './Payment';
+import AdminDivisionsPage from './AdminDivisionsPage';
 
 const App = () => {
 	return (
@@ -16,10 +18,12 @@ const App = () => {
 				<Route path="/" element={<App2 />} />
 				<Route path="/FullEventPage/:id" element={<EventPage />} />
 
+				<Route path="/Payment" element={<Payment />}></Route>
 
 				<Route path="/adminLogin" element={<Login />} />
 
 				<Route path="/adminPage" element={<PrivateRoute children={<AdminPage />} />} />
+				<Route path="/adminDivisionsPage/:idd" element={<PrivateRoute children={<AdminDivisionsPage />} />} />
 
 				<Route path="*" element={<ErrPage />} />
 

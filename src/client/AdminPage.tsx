@@ -1,18 +1,22 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-// let userID = data.UID;
+import { useNavigate } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
 
-const ShirtSelector: React.FC = () => {
+
+const AdminPage: React.FC = () => {
+    const navigate = useNavigate();
+
 
     const [nameEvent, setNameOfEvent] = useState("");
     const [date, setDate] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
+    const [nameOfEventForId, setNameOfEventForId] = useState("");
 
 
     const onSubmitEvent = () => {
         let token = localStorage.getItem("token");
-        console.log(token);
         const requestOptions = {
             method: "POST",
             headers: {
@@ -30,36 +34,26 @@ const ShirtSelector: React.FC = () => {
         };
         fetch("/auth/makeAnEvent", requestOptions).then((res) => {
             if (res.ok) {
-                alert("Event added");
+                alert("EventAdded");
             } else {
                 alert("it didn't work!");
+                return
             }
-        });
+        })
     };
 
-    // Delete an item
-
-    const onDeleteEvent = (id: number) => {
-        let token = sessionStorage.getItem("token");
-        const requestOptions = {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                id: id, //check to see if this can just be id
-            }),
-        };
-        fetch(`/api/earnableItems/delete/${id}`, requestOptions).then((res) => {
-            if (res.ok) {
-                alert("Row deleted");
-            } else {
-                alert("it didn't work!");
-            }
-        });
-    };
-
+    const NavigateToDivisionsPage = (params) => {
+        console.log(nameOfEventForId);
+        fetch(`./api/event/name/${nameOfEventForId}`)
+            .then((res) => res.json())
+            .then((eventId) => {
+                console.log(eventId)
+                navigate(`/adminDivisionsPage/${eventId[0].id}`)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <>
@@ -91,8 +85,22 @@ const ShirtSelector: React.FC = () => {
                     </button>
                 </form>
             </div>
+            <div>
+                <Form style={{ width: "50%", border: "2px solid slateGrey", borderRadius: "5px" }} className="mx-auto mt-2 py-2 px-1">
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Name Of Event</Form.Label>
+                        <Form.Control onChange={(e) => setNameOfEventForId(e.target.value)} type="text" placeholder="Enter event name" />
+                        <Form.Text className="text-muted">
+                            Type the event name exactly how you wrote it
+                        </Form.Text>
+                    </Form.Group>
+                    <Button variant="primary" type="button" onClick={NavigateToDivisionsPage}>
+                        Submit
+                    </Button>
+                </Form>
+            </div>
         </>
     );
 }
 
-export default ShirtSelector;
+export default AdminPage;

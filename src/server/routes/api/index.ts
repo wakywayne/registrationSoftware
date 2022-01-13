@@ -25,5 +25,13 @@ router.get("/event/:id", async (req, res, next) => {
     console.log(err);
   }
 })
+router.get("/event/name/:name", async (req, res, next) => {
+  try {
+    console.log(`-------------------------------------------------------------------------------------------------------------------------------------------${req.params.name}`);
+    res.json(await blogs.selectEventNameFromEvents_table((req.params.name)));
+  } catch (err) {
+    console.log(err);
+  }
+})
 
 export default router;
