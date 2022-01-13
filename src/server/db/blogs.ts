@@ -3,7 +3,10 @@ import { Users } from "./models";
 
 const selectAllFromEvents_table = () => Query("select * from events_table;");
 
+const selectAllDivisions = (id) => Query("select * from division_table where event_id = ?;", [id]);
+
 const selectEventFromEvents_table = async (id: number) => await Query("select * from events_table where id=?;", [id]);
+
 const selectEventNameFromEvents_table = async (name: string) => await Query("select id from events_table where name_of_event=?;", [name]);
 
 const find = (column: string, value: string | number) => {
@@ -32,7 +35,8 @@ export default {
   insertEvent,
   insertDivision,
   selectEventFromEvents_table,
-  selectEventNameFromEvents_table
+  selectEventNameFromEvents_table,
+  selectAllDivisions
 };
 
 

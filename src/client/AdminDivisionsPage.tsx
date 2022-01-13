@@ -42,7 +42,6 @@ const ShirtSelector: React.FC = () => {
         });
     };
 
-    console.log(params.idd);
 
     return (
         <>

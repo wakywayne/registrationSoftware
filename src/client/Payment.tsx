@@ -19,7 +19,6 @@ export default function Payment() {
     const [name, setName] = React.useState("");
     const [card, setCard] = React.useState("");
 
-    console.log(params)
 
     // React.useEffect(() => {
     //     apiService(`/api/event/${params.id}`).then((event) => {
@@ -30,7 +29,6 @@ export default function Payment() {
     //     })
     // }, [])
 
-    console.log(eventInfo);
 
     let date = eventInfo.date_of_event.slice(0, 10);
     return (

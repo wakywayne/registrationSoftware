@@ -42,12 +42,10 @@ const AdminPage: React.FC = () => {
         })
     };
 
-    const NavigateToDivisionsPage = (params) => {
-        console.log(nameOfEventForId);
+    const NavigateToDivisionsPage = () => {
         fetch(`./api/event/name/${nameOfEventForId}`)
             .then((res) => res.json())
             .then((eventId) => {
-                console.log(eventId)
                 navigate(`/adminDivisionsPage/${eventId[0].id}`)
             })
             .catch((err) => {

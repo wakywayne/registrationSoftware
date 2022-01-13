@@ -17,7 +17,6 @@ export default function Event() {
 
     }, [])
 
-    console.log(event);
 
     return (
         <div className="d-flex justify-content-evenly flex-wrap">

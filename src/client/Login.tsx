@@ -16,14 +16,14 @@ export default function Login() {
             .then((token) => {
                 localStorage.setItem('token', token);
                 navigate('/adminPage');
-                // switch (email) {
-                //     case "wakywayne80@gmail.com":
-                //         localStorage.setItem("UID", "1");
-                //         break;
-                //     case "jaytonbye@yahoo.com":
-                //         localStorage.setItem("UID", "2");
-                //         break;
-                // }
+                switch (email) {
+                    case "wakywayne80@gmail.com":
+                        localStorage.setItem("UID", "1");
+                        break;
+                    case "jaytonbye@yahoo.com":
+                        localStorage.setItem("UID", "2");
+                        break;
+                }
                 setFormKey(formKey + 1);
             })
             .catch(() => {
