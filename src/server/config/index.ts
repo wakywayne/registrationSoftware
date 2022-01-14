@@ -15,5 +15,9 @@ export default {
 
   jwt: {
     secret: process.env.JWT_SECRET,
+  },
+
+  stripe: {
+    secret: process.env.STRIPE_SECRET_KEY
   }
 };

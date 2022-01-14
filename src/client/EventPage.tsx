@@ -2,9 +2,44 @@ import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { apiService } from '../client/utils/apiservice'
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
 export default function EventPage() {
     const params = useParams();
+    const stripe = useStripe();
+    const elements = useElements();
+
+    const handleCardSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        // e.preventDefault();
+        if (!stripe || !elements) return;
+
+        const cardInfo = elements.getElement(CardElement);
+
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardInfo,
+
+            billing_details: {
+                name
+            }
+        });
+
+        if (error) {
+            console.log(error)
+        } else {
+            console.log(paymentMethod)
+
+            const res = await fetch('/api/donate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chosenDivision, paymentMethod })
+            });
+
+            const paymentCompleted = await res.json();
+            console.log(paymentCompleted);
+        }
+    }
+
 
     const defaultState = {
         id: 3,
@@ -19,6 +54,7 @@ export default function EventPage() {
     const [incrementor, setIncrementor] = React.useState(0);
     const [divisions, setDivisions] = React.useState([]);
     const [chosenDivision, setChosenDivision] = React.useState<any>("");
+    const [name, setName] = React.useState("");
 
 
     React.useEffect(() => {
@@ -45,10 +81,8 @@ export default function EventPage() {
 
     }, [incrementor])
 
-    // console.log(divisions);
-    console.log(chosenDivision);
 
-    let date = oneEvent.date_of_event.slice(0, 10);
+
     return (
         <div className="row mt-2">
             <Card className="mx-auto my-auto text-light" style={{ width: '90%' }} bg="secondary">
@@ -66,20 +100,28 @@ export default function EventPage() {
                                     {divisions.map((divisionItem) => {
                                         return (
                                             <>
+                                                {/* If jason shows me data I can get the name of event here */}
                                                 <option value={divisionItem.cost} key={`DivisionsId:${divisionItem.id}`}>{divisionItem.name_of_division}~ ${divisionItem.cost}</option>
                                             </>
                                         )
                                     })}
                                 </Form.Select>
-                                <Form.Text className="text-light">
-                                    I feel like we will need this
-                                </Form.Text>
                             </Form.Group>
-                            {/* <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Group className="mb-3" controlId="formBasicName">
+                                <Form.Text className="text-light">
+                                    PLease enter your
+                                </Form.Text>
+                                <br />
+                                <Form.Label>Full Name</Form.Label>
+                                <Form.Control onChange={(e) => setName(e.target.value)} type="text" placeholder="Ex. John Doe Smith" />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>You will be charged</Form.Label>
-                                <Form.Control disabled onChange={(e) => setEmail(e.target.value)} type="number" placeholder={String(chosenDivision)} />
-                            </Form.Group> */}
-                            <Button variant="primary" size='lg' className="w-50">Register</Button>
+                                <CardElement className="form-control" />
+                                {/* <Form.Control disabled onChange={(e) => setEmail(e.target.value)} type="number" placeholder={String(chosenDivision)} /> */}
+                            </Form.Group>
+                            <Button variant="primary" size='lg' className="w-50" type="button" onClick={handleCardSubmit}>Register</Button>
                         </Form>
                     </div>
                 </Card.Body>
@@ -87,3 +129,4 @@ export default function EventPage() {
         </div>
     )
 }
+

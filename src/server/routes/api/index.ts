@@ -1,7 +1,9 @@
 import * as express from "express";
 import config from "../../config";
-import { tokenCheck } from '../../middleware/auth';
 import blogs from "../../db/blogs";
+import Stripe from 'stripe';
+
+const stripe = new Stripe(config.stripe.secret, { apiVersion: '2020-08-27' })
 
 const router = express.Router();
 
@@ -34,9 +36,17 @@ router.get("/event/divisions/:id", async (req, res, next) => {
   }
 })
 
-router.get("/event/name/:name", async (req, res, next) => {
+router.post("/donate", async (req, res, next) => {
+  const paymentMethod = req.body.paymentMethod;
+  const amount = req.body.chosenDivision;
   try {
-    res.json(await blogs.selectEventNameFromEvents_table((req.params.name)));
+    const fulfilled = await stripe.paymentIntents.create({
+      currency: 'usd',
+      amount: Number(amount) * 100,
+      payment_method: paymentMethod.id,
+      confirm: true
+    })
+    res.json(fulfilled)
   } catch (err) {
     console.log(err);
   }

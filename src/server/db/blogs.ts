@@ -3,7 +3,7 @@ import { Users } from "./models";
 
 const selectAllFromEvents_table = () => Query("select * from events_table;");
 
-const selectAllDivisions = (id) => Query("select * from division_table where event_id = ?;", [id]);
+const selectAllDivisions = (id: number) => Query("select * from division_table where event_id = ?;", [id]);
 
 const selectEventFromEvents_table = async (id: number) => await Query("select * from events_table where id=?;", [id]);
 
