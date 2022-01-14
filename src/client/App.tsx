@@ -13,7 +13,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
 import ThankYou from './ThankYou';
 
-const stripe = loadStripe('pk_test_51GzBOTA0E0lWenKuyj5P79REtLVueBgf5eNEHcMihkwJWvfES5z5IySy4hZCHlkxZWWwx4AHRWi99m0NdvrBpvhN005FDsnvXV');
+const stripe = loadStripe('pk_live_51GzBOTA0E0lWenKumtNuijxUXmGnoEuOWEFIevNomzGeYNnUkJQs0v4lHmgCCRlp1lXSu5304HS3nMecqzonm80100AAtIHVc6');
 
 const App = () => {
 	return (
@@ -30,7 +30,7 @@ const App = () => {
 
 				<Route path="/adminDivisionsPage/:idd" element={<PrivateRoute children={<AdminDivisionsPage />} />} />
 
-				<Route path="thankYouPage" element={<ThankYou />} />
+				<Route path="/thankYouPage" element={<ThankYou />} />
 
 				<Route path="/FullEventPage/:id" element={<Elements stripe={stripe}><EventPage /></Elements>} />
 

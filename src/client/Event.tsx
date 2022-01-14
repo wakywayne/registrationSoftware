@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, Button } from 'react-bootstrap';
+import Style from 'styled-components';
+import { Card, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
 
@@ -18,25 +19,33 @@ export default function Event() {
     }, [])
 
 
+    const hoverStyle = {
+        "&:hover": {
+            border: "solid 3px #00ddff"
+        }
+    }
+
     return (
-        <div className="d-flex justify-content-evenly flex-wrap">
+        // <div className="d-flex justify-content-evenly flex-wrap">
+        <>
             {
-                event.map((event) => {
+                event.map((event, index) => {
                     let date = event.date_of_event.slice(0, 10);
                     return (
-                        <div key={event.id} className="my-1">
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Body>
-                                    <Card.Title>{event.name_of_event}</Card.Title>
-                                    <Card.Text>
-                                        {date}
-                                    </Card.Text>
-                                    <Link to={`/FullEventPage/${event.id}`}><Button variant="primary">Register</Button></Link>
-                                </Card.Body>
-                            </Card>
+                        <div className="row">
+
+                            <div key={event.id} className="my-1 w-75 mx-auto">
+                                <Link to={`/FullEventPage/${event.id}`} style={{ textDecoration: "none" }}>
+                                    <Alert variant={index % 2 == 0 ? 'primary' : 'secondary'} className="alert-hover">
+                                        {event.name_of_event} ({date})
+                                    </Alert>
+                                </Link>
+                            </div>
                         </div>
                     )
-                })}
-        </div>
+                })
+            }
+        </>
+        // </div>
     )
 }

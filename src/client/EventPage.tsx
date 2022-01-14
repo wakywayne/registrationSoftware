@@ -1,16 +1,20 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Card, Button, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { apiService } from '../client/utils/apiservice'
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import DivisionsCards from './DivisionsCards'
 
 export default function EventPage() {
+    const navigate = useNavigate();
     const params = useParams();
     const stripe = useStripe();
     const elements = useElements();
+    const paramId = params.id;
 
     const handleCardSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        // e.preventDefault();
+        e.preventDefault();
         if (!stripe || !elements) return;
 
         const cardInfo = elements.getElement(CardElement);
@@ -27,7 +31,6 @@ export default function EventPage() {
         if (error) {
             console.log(error)
         } else {
-            console.log(paymentMethod)
 
             const res = await fetch('/api/donate', {
                 method: 'POST',
@@ -36,7 +39,11 @@ export default function EventPage() {
             });
 
             const paymentCompleted = await res.json();
-            console.log(paymentCompleted);
+            // console.log(paymentCompleted);
+            alert('payment accepted');
+            navigate("/thankYouPage");
+
+
         }
     }
 
@@ -84,49 +91,54 @@ export default function EventPage() {
 
 
     return (
-        <div className="row mt-2">
-            <Card className="mx-auto my-auto text-light" style={{ width: '90%' }} bg="secondary">
-                <Card.Body>
-                    <Card.Title className="text-center"><h1>{oneEvent.name_of_event}</h1></Card.Title>
-                    <Card.Text className="text-center">
-                        <h5>{oneEvent.event_description}</h5>
-                    </Card.Text>
-                    <div className="d-flex justify-content-center">
-                        <Form style={{ width: "80%", border: "2px solid slateGrey", borderRadius: "5px" }} className="mx-auto mt-2 py-2 px-1 bg-dark">
-                            <Form.Group className="mb-3" controlId="formBasicDivision">
-                                <Form.Label>Choose Division</Form.Label>
-                                <Form.Select onChange={(e) => setChosenDivision(e.target.value)} placeholder="Choose Your Event" >
-                                    <option>Choose Your Division</option>
-                                    {divisions.map((divisionItem) => {
-                                        return (
-                                            <>
-                                                {/* If jason shows me data I can get the name of event here */}
-                                                <option value={divisionItem.cost} key={`DivisionsId:${divisionItem.id}`}>{divisionItem.name_of_division}~ ${divisionItem.cost}</option>
-                                            </>
-                                        )
-                                    })}
-                                </Form.Select>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formBasicName">
-                                <Form.Text className="text-light">
-                                    PLease enter your
-                                </Form.Text>
-                                <br />
-                                <Form.Label>Full Name</Form.Label>
-                                <Form.Control onChange={(e) => setName(e.target.value)} type="text" placeholder="Ex. John Doe Smith" />
-                            </Form.Group>
+        <>
+            <div className="row mt-2 w-100">
+                <Card className="mx-auto my-auto text-light" style={{ width: '90%' }} bg="secondary">
+                    <Card.Body>
+                        <Card.Title className="text-center"><h1>{oneEvent.name_of_event}</h1></Card.Title>
+                        <Card.Text className="text-center">
+                            <h5>{oneEvent.event_description}</h5>
+                        </Card.Text>
+                        <div className="d-flex justify-content-center">
+                            <Form style={{ width: "80%", border: "2px solid slateGrey", borderRadius: "5px" }} className="mx-auto mt-2 py-2 px-1 bg-dark">
+                                <Form.Group className="mb-3" controlId="formBasicDivision">
+                                    <Form.Label>Choose Division</Form.Label>
+                                    <Form.Select onChange={(e) => setChosenDivision(e.target.value)} placeholder="Choose Your Event" >
+                                        <option>Choose Your Division</option>
+                                        {divisions.map((divisionItem) => {
+                                            return (
+                                                <>
+                                                    {/* If jason shows me data I can get the name of event here */}
+                                                    <option value={divisionItem.cost} key={`DivisionsId:${divisionItem.id}`}>{divisionItem.name_of_division}~ ${divisionItem.cost}</option>
+                                                </>
+                                            )
+                                        })}
+                                    </Form.Select>
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicName">
+                                    <Form.Text className="text-light">
+                                        PLease enter your
+                                    </Form.Text>
+                                    <br />
+                                    <Form.Label>Full Name</Form.Label>
+                                    <Form.Control onChange={(e) => setName(e.target.value)} type="text" placeholder="Ex. John Doe Smith" />
+                                </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>You will be charged</Form.Label>
-                                <CardElement className="form-control" />
-                                {/* <Form.Control disabled onChange={(e) => setEmail(e.target.value)} type="number" placeholder={String(chosenDivision)} /> */}
-                            </Form.Group>
-                            <Button variant="primary" size='lg' className="w-50" type="button" onClick={handleCardSubmit}>Register</Button>
-                        </Form>
-                    </div>
-                </Card.Body>
-            </Card>
-        </div>
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label>You will be charged</Form.Label>
+                                    <CardElement className="form-control" />
+                                    {/* <Form.Control disabled onChange={(e) => setEmail(e.target.value)} type="number" placeholder={String(chosenDivision)} /> */}
+                                </Form.Group>
+                                <Button variant="success" size='lg' className="w-50" type="submit" onClick={handleCardSubmit}>Register</Button>
+                            </Form>
+                        </div>
+                    </Card.Body>
+                </Card>
+
+            </div>
+            <DivisionsCards theId={paramId} />
+        </>
     )
 }
+
 
