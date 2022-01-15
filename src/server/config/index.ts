@@ -18,6 +18,6 @@ export default {
   },
 
   stripe: {
-    secret: process.env.STRIPE_SECRET_KEY
-  }
+    secret: process.env.STRIPE_SECRET_KEY,
+  },
 };
