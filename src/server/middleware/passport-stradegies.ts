@@ -16,6 +16,8 @@ export function configurePassport(app: Application) {
 
   passport.deserializeUser((user, done) => done(null, user));
 
+  console.log(config.jwt.secret);
+
   passport.use(
     new PassportLocal.Strategy(
       {
