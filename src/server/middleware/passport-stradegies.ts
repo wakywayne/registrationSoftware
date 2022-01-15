@@ -6,6 +6,8 @@ import * as PassportJWT from "passport-jwt";
 import { compareHash } from "../utils";
 import { Application } from "express";
 
+console.log(config.jwt.secret);
+
 export function configurePassport(app: Application) {
   passport.serializeUser((user: any /*I suck*/, done) => {
     if (user.password) {
@@ -15,8 +17,6 @@ export function configurePassport(app: Application) {
   });
 
   passport.deserializeUser((user, done) => done(null, user));
-
-  console.log(config.jwt.secret);
 
   passport.use(
     new PassportLocal.Strategy(
