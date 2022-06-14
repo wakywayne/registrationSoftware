@@ -13,7 +13,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
 import ThankYou from './ThankYou';
 
-const stripe = loadStripe('pk_live_51GzBOTA0E0lWenKumtNuijxUXmGnoEuOWEFIevNomzGeYNnUkJQs0v4lHmgCCRlp1lXSu5304HS3nMecqzonm80100AAtIHVc6');
+// const stripe = loadStripe('pk_live_51GzBOTA0E0lWenKumtNuijxUXmGnoEuOWEFIevNomzGeYNnUkJQs0v4lHmgCCRlp1lXSu5304HS3nMecqzonm80100AAtIHVc6');
+const stripe = loadStripe('pk_test_51GzBOTA0E0lWenKuyj5P79REtLVueBgf5eNEHcMihkwJWvfES5z5IySy4hZCHlkxZWWwx4AHRWi99m0NdvrBpvhN005FDsnvXV');
 
 const App = () => {
 	return (

@@ -43,9 +43,11 @@ const AdminPage: React.FC = () => {
     };
 
     const NavigateToDivisionsPage = () => {
-        fetch(`./api/event/name/${nameOfEventForId}`)
+        console.log(nameOfEventForId);
+        fetch(`/api/event/name/${nameOfEventForId}`)
             .then((res) => res.json())
             .then((eventId) => {
+                console.log(eventId);
                 navigate(`/adminDivisionsPage/${eventId[0].id}`)
             })
             .catch((err) => {
@@ -87,7 +89,7 @@ const AdminPage: React.FC = () => {
                 <Form style={{ width: "50%", border: "2px solid slateGrey", borderRadius: "5px" }} className="mx-auto mt-2 py-2 px-1">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Name Of Event</Form.Label>
-                        <Form.Control onChange={(e) => setNameOfEventForId(e.target.value)} type="text" placeholder="Enter event name" />
+                        <Form.Control onChange={(e) => setNameOfEventForId(e.target.value)} type="text" placeholder="Enter event name" value={nameOfEventForId} />
                         <Form.Text className="text-muted">
                             Type the event name exactly how you wrote it
                         </Form.Text>
