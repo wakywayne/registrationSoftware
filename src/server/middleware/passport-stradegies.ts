@@ -6,8 +6,6 @@ import * as PassportJWT from "passport-jwt";
 import { compareHash } from "../utils";
 import { Application } from "express";
 
-console.log(config.jwt.secret);
-console.log(config);
 
 export function configurePassport(app: Application) {
   passport.serializeUser((user: any /*I suck*/, done) => {
